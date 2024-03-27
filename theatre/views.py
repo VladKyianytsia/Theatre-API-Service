@@ -47,7 +47,7 @@ class ActorViewSet(viewsets.ModelViewSet):
 
 
 class PlayViewSet(viewsets.ModelViewSet):
-    queryset = Play.objects.all()
+    queryset = Play.objects.prefetch_related("genres", "actors")
     serializer_class = PlaySerializer
 
     @staticmethod
@@ -95,7 +95,7 @@ class PlayViewSet(viewsets.ModelViewSet):
 
 
 class PerformanceViewSet(viewsets.ModelViewSet):
-    queryset = Performance.objects.all()
+    queryset = Performance.objects.select_related("play", "theatre_hall")
     serializer_class = PerformanceSerializer
 
     def get_queryset(self):
@@ -136,7 +136,9 @@ class ReservationViewSet(
     mixins.ListModelMixin,
     GenericViewSet
 ):
-    queryset = Reservation.objects.all()
+    queryset = Reservation.objects.prefetch_related(
+        "tickets__performance__play", "tickets__performance__theatre_hall"
+    )
     serializer_class = ReservationSerializer
     pagination_class = ReservationSetPagination
     permission_classes = (IsAuthenticated,)
