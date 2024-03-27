@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models import F, Count
 from rest_framework import viewsets, mixins
 from rest_framework.viewsets import GenericViewSet
@@ -83,6 +85,14 @@ class PerformanceViewSet(viewsets.ModelViewSet):
                 - Count("tickets")
             )
         )
+
+        if date := self.request.query_params.get("date"):
+            date = datetime.strptime(date, "%Y-%m-%d").date()
+            queryset = queryset.filter(show_time__date=date)
+
+        if play_id := self.request.query_params.get("play"):
+            queryset = queryset.filter(play_id=play_id)
+
         return queryset
 
     def get_serializer_class(self):
