@@ -77,13 +77,6 @@ class PerformanceListSerializer(serializers.ModelSerializer):
         )
 
 
-class ReservationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Reservation
-        fields = ("id", "created_at", "user")
-
-
 class TicketSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
@@ -99,3 +92,32 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = ("id", "row", "seat", "performance")
+
+
+class TicketSeatSerializer(TicketSerializer):
+
+    class Meta:
+        model = Ticket
+        fields = ("row", "seat")
+
+
+class PerformanceDetailSerializer(serializers.ModelSerializer):
+    play = PlayListSerializer(read_only=True)
+    theatre_hall = TheatreHallSerializer(read_only=True)
+    taken_places = TicketSeatSerializer(
+        source="tickets",
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = Performance
+        fields = ("id", "show_time", "play", "theatre_hall", "taken_places")
+        read_only_fields = ("play", "theatre_hall")
+
+
+class ReservationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Reservation
+        fields = ("id", "created_at", "user")
