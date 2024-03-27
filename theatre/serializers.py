@@ -45,6 +45,11 @@ class PlayListSerializer(PlaySerializer):
     )
 
 
+class PlayDetailSerializer(PlaySerializer):
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
+
+
 class PerformanceSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -64,7 +69,10 @@ class TicketSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         data = super(TicketSerializer, self).validate(attrs=attrs)
         Ticket.validate_ticket(
-            attrs["row"], attrs["seat"], attrs["performance"], ValidationError
+            attrs["row"],
+            attrs["seat"],
+            attrs["performance"].theatre_hall,
+            ValidationError
         )
         return data
 
