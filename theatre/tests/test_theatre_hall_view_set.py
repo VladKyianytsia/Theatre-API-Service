@@ -85,6 +85,8 @@ class AdminTheatreHallViewSetTests(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(TheatreHall.objects.filter(name=response.data["name"]).exists())
+        self.assertTrue(
+            TheatreHall.objects.filter(name=response.data["name"]).exists()
+        )
 
 

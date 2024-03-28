@@ -44,7 +44,9 @@ class AuthenticatedPerformanceViewSetTests(TestCase):
             show_time=datetime.datetime.now()
         )
 
-        response = self.client.get(reverse("theatre:performance-detail", args=[performance.id]))
+        response = self.client.get(
+            reverse("theatre:performance-detail", args=[performance.id])
+        )
 
         serializer = PerformanceDetailSerializer(performance)
 

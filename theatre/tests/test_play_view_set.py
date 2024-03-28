@@ -60,7 +60,9 @@ class AuthenticatedPlayViewSetTests(TestCase):
         play.actors.add(actor.id)
         play.genres.add(genre.id)
 
-        response = self.client.get(reverse("theatre:play-detail", args=[play.id]))
+        response = self.client.get(
+            reverse("theatre:play-detail", args=[play.id])
+        )
         serializer = PlayDetailSerializer(play)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -123,7 +125,10 @@ class AuthenticatedPlayViewSetTests(TestCase):
         play1.genres.add(genre1)
         play2.genres.add(genre2)
 
-        response = self.client.get(PLAY_URL, {"genres": f"{genre1.id},{genre2.id}"})
+        response = self.client.get(
+            PLAY_URL,
+            {"genres": f"{genre1.id},{genre2.id}"}
+        )
 
         serializer1 = PlayListSerializer(play1)
         serializer2 = PlayListSerializer(play2)
@@ -155,7 +160,10 @@ class AuthenticatedPlayViewSetTests(TestCase):
         play1.actors.add(actor1)
         play2.actors.add(actor2)
 
-        response = self.client.get(PLAY_URL, {"actors": f"{actor1.id},{actor2.id}"})
+        response = self.client.get(
+            PLAY_URL,
+            {"actors": f"{actor1.id},{actor2.id}"}
+        )
 
         serializer1 = PlayListSerializer(play1)
         serializer2 = PlayListSerializer(play2)
