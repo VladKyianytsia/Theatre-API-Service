@@ -88,5 +88,3 @@ class AdminTheatreHallViewSetTests(TestCase):
         self.assertTrue(
             TheatreHall.objects.filter(name=response.data["name"]).exists()
         )
-
-
