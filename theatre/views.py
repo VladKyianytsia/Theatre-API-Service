@@ -5,7 +5,6 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -18,6 +17,7 @@ from theatre.models import (
     Performance,
     Reservation,
 )
+from theatre.paginations import ReservationSetPagination
 from theatre.serializers import (
     TheatreHallSerializer,
     GenreSerializer,
@@ -168,12 +168,6 @@ class PerformanceViewSet(viewsets.ModelViewSet):
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
-
-
-class ReservationSetPagination(PageNumberPagination):
-    page_size = 4
-    page_size_query_param = "page_size"
-    max_page_size = 20
 
 
 class ReservationViewSet(
